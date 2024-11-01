@@ -1,0 +1,119 @@
+
+- Creating a Simple Image#
+	: The Dockerfile file can have any name. Naming it Dockerfile makes it easier for others to understand its purpose when they see that file in your project. It also means we don’t need to state the file name when using the docker build command.
+	
+- A Dockerfile file always begins with a FROM instruction because every image is based on another base image
+-  The CMD instruction specifies which executable is run when a container is created using your image and provides optional arguments.
+
+- create an image from my Dockerfile file :
+	docker build -t name . 
+	and it can then be run like any other image using the following command: docker run --rm name 
+
+
+- The -it switch allows me to stop the container using Ctrl-C from the command-line
+- The --rm switch ensures that the container is deleted once it has stopped
+
+
+I can see the images available locally on my computer by running the following command:
+	-docker image ls
+	- docker rmi to delete image from local 
+
+Tags Matter : 
+	Why Would You Tag Your Images?: 
+	Be able to roll back to a previous version of an image if you detect a problem with the latest image.
+
+	Run different versions in different environments. For instance, the latest version in a test environment and the previous version in a production environment.
+
+	Run different versions at the same time, routing some users to the latest version and some to the previous versions. This is known as a canary release.
+
+	Deploy different versions to different users, and be able to run whatever version on your development machine while you support the
+
+
+Parameters as Environment Variables
+
+- Storage : using VOLUME
+
+- Networking : EXPOSE port_Num => Using this instruction is purely for documentation purposes. It will NOT open a port to the outside world when a container is created from that image
+
+nstruction	Description
+ADD	Add local or remote files and directories.
+ARG	Use build-time variables.
+CMD	Specify default commands.
+COPY	Copy files and directories.
+ENTRYPOINT	Specify default executable.
+ENV	Set environment variables.
+EXPOSE	Describe which ports your application is listening on.
+FROM	Create a new build stage from a base image.
+HEALTHCHECK	Check a container's health on startup.
+LABEL	Add metadata to an image.
+MAINTAINER	Specify the author of an image.
+ONBUILD	Specify instructions for when the image is used in a build.
+RUN	Execute build commands.
+SHELL	Set the default shell of an image.
+STOPSIGNAL	Specify the system call signal for exiting a container.
+USER	Set user and group ID.
+VOLUME	Create volume mounts.
+WORKDIR	Change working directory
+
+
+
+There are two ways to have an image available on your machine:
+
+Create an image using the docker build command. We saw this in the previous chapter.
+
+Get an image from a Registry, using the docker pull command or implicitly when using the docker run command for an image that is not available locally.
+
+
+
+Docker Hub : Docker Hub is a Docker Registry offered by Docker Inc
+
+You can use a .dockerignore file for that purpose. Simply add a .dockerignore file at the root of your build context that lists files and folders that should be excluded from the build like a .gitignore file.
+
+
+
+Hot Reload : we don't want to have to rebuild our container image with every code change. Instead, we want the state of our application in the container to reflect changes immediately.
+
+in docker run commanad we use -V ( absolute path in your local : /workingDir ) 
+ 
+Volumes in Docker : 
+:ro for read only
+
+
+docker-copmose  : 
+tool that combines and runs multiple containers of interrelated services with a single command.
+ It is a tool to define all the application dependencies in one place and let the Docker take care of running all of those services in just one simple command docker-compose up.
+ 
+ 
+ - Docker-compose file : 
+ - The Compose file is in YAML format.
+ - version : docker-compose started with version -> "version __ "
+ - services :  The services section defines all the docker images required and need to be built for the application to work
+ - build: This clause specifies the Dockerfile location. ‘.’ represents the current directory where the docker-compose.yml 
+ - ports: The ports clause is used to map the container ports to the host machine’s port. It creates a tunnel from the specified container port to the provided host machine’s port.
+ - volumes: This is the same as the -v option used to mount disks in docker run command. 
+ - links: Links literally link one service to another. In the bridge network, we have to specify which container should be accessible to what container using a link to the respective containers.
+ - environment: Any environment variable that should be present in the container can be created using the environment clause.
+ 
+ 
+ ** Docker-Compose Commands : 
+ - Every command starts with this. docker-compose 
+ - docker-compose build : This command builds images of the mentioned services in the docker-compose.yml file for which a Dockerfile is provided.
+ - docker-compose images : This command lists images built using the current docker-compose file.
+ - docker-compose run : Similar to docker run command, this one creates containers from images built for the services mentioned in the compose file , It runs a specific service provided as an argument to the command.
+ - docker-compose up : This does the job of the docker-compose build and docker-compose run commands. It initially builds the images if they are not located locally and then starts the containers.
+ - docker-compose stop : This command stops the running containers of the specified services in the docker-compose file 
+ - docker-compose rm: This command removes the containers of the services or the containers created using the current docker-compose file , It will remove all the containers which have services mentioned in the docker-compose file.
+ - docker-compose start : This command starts any stopped containers of the services
+ - docker-compose restart : This command restarts all the containers of the services
+ - docker-compose ps : This lists all the containers for services mentioned in the current docker-compose file
+ - docker-compose down : This command is similar to docker system prune. However, there is a small difference. It stops all the services and then cleans up the containers, networks, and images used and created by the compose file services.
+
+ - docker-compose logs : This command is similar to docker logs
+
+
+
+
+ 
+- radis : open source in memory data store  
+
+- NGINX :  open-source web server software used for reverse proxy, load balancing, and caching
