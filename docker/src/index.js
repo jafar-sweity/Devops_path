@@ -52,7 +52,7 @@ client
 
 app.get("/", (req, res) => {
   client.set("key", "prouct");
-  res.send("Hello World");
+  res.send("Hello jafar from AWS EC2");
 });
 // api test redis
 app.get("/get", async (req, res) => {
