@@ -52,7 +52,7 @@ client
 
 app.get("/", (req, res) => {
   client.set("key", "prouct");
-  res.send("Hello jafar from AWS EC2");
+  res.send("Hello jafar from AWS EC2 using Docker-hub");
 });
 // api test redis
 app.get("/get", async (req, res) => {

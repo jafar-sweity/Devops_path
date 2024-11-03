@@ -5,6 +5,7 @@ services:
     build:
       context: .
     container_name: node_app
+    image: node_app
     ports:
       - "3000:3000"
     env_file:
