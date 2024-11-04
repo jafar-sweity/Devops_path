@@ -51,7 +51,6 @@ client
   });
 
 app.get("/", (req, res) => {
-<<<<<<< HEAD
   redisClient.set("key", "prouct");
 
   res.send(
@@ -61,14 +60,6 @@ app.get("/", (req, res) => {
 // api test redis
 app.get("/get", async (req, res) => {
   let reslut = await redisClient.get("key");
-=======
-  client.set("key", "prouct");
-  res.send("Hello jafar from AWS EC2 using Docker-hub");
-});
-// api test redis
-app.get("/get", async (req, res) => {
-  let reslut = await client.get("key");
->>>>>>> a687b5db8432113fdef9a725491c7a0b4373166b
   res.send(reslut);
 });
 app.listen(PORT, () => {
