@@ -54,7 +54,7 @@ app.get("/", (req, res) => {
   redisClient.set("key", "prouct");
 
   res.send(
-    `Hello jafar from AWS EC2 using Docker-hub and iam from ${os.hostname()}`
+    `Hello jafar from AWS EC2 using Docker-hub and iam from ${os.hostname()} also uing docker swarm`
   );
 });
 // api test redis
