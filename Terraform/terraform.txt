@@ -1,0 +1,148 @@
+
+
+What is IAC : 
+- a way to help infrastructure provisioning and congiguration through code without the need to do that pyhsically 
+- easier infrastructure automation with the pipelines 
+- ist part of your codebase/repo tracked and version-controlled 
+    - its not anymore something left to the discretion of the sys-admin or devops engineer to decide informally 
+- easier security scanning and vulnerability discovery  
+
+- Iac is work through templates . with iac the congiguration files are created according to the congiguration specification 
+
+
+* types of the IaC : 
+- scripts : scripting is a very direct of IaC , this type of IaC is usually used for simple task and is not advised for complex task 
+- congiguration management tool  : ......
+- provisioning tools : .......
+- container and templating tools : ..........
+
+* brnrfits of infrastructure as a code : 
+    - efficency 
+    - versioning and tracking 
+    -  speed 
+    - collaboration : ......
+    - eliminate congiguration drift : ......
+    - stable and scaleable enviroments 
+    - Disaster Recovery 
+    
+* Two approaches of automateting infrastructure : 
+    - declarative : you define the desired state of the final solution 
+    - imperative : you define the steps to execute in order to reach the desired soultion 
+
+* Mutable Vs immutable infrastructure : 
+    - Mutable infrastructure : can be changed to fit business needs , you can easily introduce updates to the existing version , applay pathces and scale 
+    - immutable infrastructure : cant be changed oonce deploy , if you want to make change it or update it you have to replace it with new version -> docker , terraform , K8S  
+
+* Agent Vs Agentless : .....
+
+how to start doing it : 
+
+- Terraform :  tool of infrastructure as code tool that let you define both cloud and on-prem resources in human-readable congiguration files that you can version , reuse and share , to automate infrastructure tasks 
+             - cloud agnostic 
+             - the most widely-used IaC tool 
+             - helps manage and automate infrastructure
+             - uses a declarative language to describe infrastructure , little logic involved 
+             - use HCL language : its declarative language and focusing in end state
+
+-The beauty of Terraform is that it does not ask you how to get from the infrastructure you have to the infrastructure you want
+
+ 
+
+* the core terraform workflow consists of three satges : 
+    - Write : you define resources , wich may be across multiple cloud Provideer and services 
+    - plan : create execution plan describe the infrastructure it will create , update or destroy 
+    - applay : on approval ....
+
+
+
+- Some Terms Of Terraform : 
+    - Provideer : plugins the help Terraform interact with defferent platforms , A provider in Terraform is a connection that allows Terraform to manage infrastructure using a pre-defined interface. This abstraction means the provider is completely separate from the Terraform engine - which understands how to read state from a provider, read HCL code, and work out how to get to the desired state.
+
+    - Resource : an infrastructure piece you're defining 
+    - state File : a file containing information about the current state of the infrastructure 
+    - Backend : the place where the state File is stored , can be local or in cloud 
+    - Var : a terraform value/Variable that the user can set 
+    - local : a terraform value that is constant-ish and the user can't change 
+
+- provisioning : is the process of setting up It infrastructure , it can also refer to the steps required to manage and acess to data and Resource 
+
+* infrastructure provisioning ( terraform ) Vs congiguration management( ansible ) : ........ 
+
+Two parts of Terraform
+Terraform is actually split into two parts:
+
+One part is the Terraform engine that knows how to get from the state your infrastructure is currently into the state you want your infrastructure to be in.
+
+The other part is the provider, which talks to the infrastructure to find out the current state and make changes using the infrastructure’s API.
+
+
+## Terraform vs. CloudFormation# :
+- Faster Terraform
+- CloudFormation readability : YAML does allow comments and is a bit less verbose than JSON. The big downside of YAML is that YAML is very, very fussy about correct indentation
+- Terraform readability : Terraform uses HCL, which has a clean, concise syntax. It is very easy to read, allows comments (both inline and block), and is not fussy about spacing, newlines, or indentation.
+- Terraform’s pinnacle killer feature : Terraform to configure all of your infrastructures, whereas CloudFormation only works for AWS.
+
+## Chef and Puppet vs. Terraform 
+
+## terraform command : 
+- Terraform plan  : The plan is what Terraform will do to get the real infrastructure from where it is now to how you have specified you want it to be in code
+- The great thing about this plan is that Terraform presents it to us and then pauses, giving us time to decide whether we want to go ahead. You can imagine how useful this is if you accidentally make a change that will destroy your database! To get Terraform to make these changes and create the S3 bucket, type yes and press enter
+
+## Terraform apply : 
+Once the apply has finished, you should see the message Apply complete! Resources: 1 added, 0 changed, 0 destroyed.. This is Terraform telling you that it successfully created the S3 bucket for you. Now, let’s work through the following steps:
+
+## Terraform destroy
+Simply run the command terraform destroy.
+
+Terraform will present a plan to you of what it is going to destroy and then pause so you can confirm.
+
+Type yes and press enter. When the destroy finishes, you will see a message Destroy complete! Resources: 1 destroyed..
+
+This is telling you Terraform has successfully destroyed everything.
+
+Log into the AWS console and go to S3, and you will see that the bucket is now gone.
+
+--- Terraform resources
+: Resources in Terraform represent things in the real world
+
+
+-- vpc in AWS : 
+# vpc in aws is a virtual private cloud that allows you to launch aws resources into a virtual network that you define  
+- this network is isolated from other VPCs and public internet 
+
+- subnet : range of ip addresses within a vpc 
+- internet gateaway : virtual router that connects your vpc to public internet 
+- security group 
+- vpn  connection 
+- vpc endpoint 
+- traffic mirroring 
+
+
+## Creating multiple instances of the same provider
+```
+provider "aws" {
+    region = "us-east-1"
+}
+
+provider "aws" {
+    region = "us-east-2"
+    alias = "ohio"
+}
+
+resource "aws_vpc" "n_virginia_vpc" {
+    cidr_block = "10.0.0.0/16"
+}
+
+resource "aws_vpc" "ohio_vpc" {
+    cidr_block = "10.1.0.0/16"
+    provider = aws.ohio
+}
+```
+# VPC creation : 
+......
+
+
+# data sources in detail : 
+
+A data source in Terraform is used to fetch data from a resource that is not managed by the current Terraform project. This allows it to be used in the current project. You can think of it as a read-only resource that already exists; the object exists, but you want to read specific properties of that object for use in your project.
+
