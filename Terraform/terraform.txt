@@ -19,7 +19,7 @@ What is IAC :
 * brnrfits of infrastructure as a code : 
     - efficency 
     - versioning and tracking 
-    -  speed 
+    - speed 
     - collaboration : ......
     - eliminate congiguration drift : ......
     - stable and scaleable enviroments 
@@ -85,13 +85,16 @@ The other part is the provider, which talks to the infrastructure to find out th
 ## Chef and Puppet vs. Terraform 
 
 ## terraform command : 
+- terraform init : to initialize the working directory containing Terraform configuration files
+
 - Terraform plan  : The plan is what Terraform will do to get the real infrastructure from where it is now to how you have specified you want it to be in code
+
 - The great thing about this plan is that Terraform presents it to us and then pauses, giving us time to decide whether we want to go ahead. You can imagine how useful this is if you accidentally make a change that will destroy your database! To get Terraform to make these changes and create the S3 bucket, type yes and press enter
 
-## Terraform apply : 
+- Terraform apply : 
 Once the apply has finished, you should see the message Apply complete! Resources: 1 added, 0 changed, 0 destroyed.. This is Terraform telling you that it successfully created the S3 bucket for you. Now, let’s work through the following steps:
 
-## Terraform destroy
+-Terraform destroy
 Simply run the command terraform destroy.
 
 Terraform will present a plan to you of what it is going to destroy and then pause so you can confirm.
@@ -102,8 +105,32 @@ This is telling you Terraform has successfully destroyed everything.
 
 Log into the AWS console and go to S3, and you will see that the bucket is now gone.
 
+- terraform validate : to check the syntax of the file 
+- terraform fmt : to format the file
+- terraform show : to show the current state of the infrastructure
+- terraform state : to show the state of the infrastructure
+- terraform output : to show the output of the infrastructure
+
 --- Terraform resources
-: Resources in Terraform represent things in the real world
+- resource : a block of code that defines a single piece of infrastructure 
+- data : a block of code that defines a data source , which is a way to fetch data from a resource that is not managed by the current Terraform project 
+
+- module : a block of code that defines a module , which is a way to group together resources and data sources
+
+- output : a block of code that defines an output , which is a way to expose information about the infrastructure to the user
+
+- provider : a block of code that defines a provider , which is a way to connect Terraform to a cloud provider or other service , three types of providers : 
+    - official providers : maintained by HashiCorp , such as AWS or Azure
+    - community providers : maintained by the community  , not by HashiCorp
+    - partner providers : maintained by a partner of HashiCorp : such as Datadog or PagerDuty 
+
+- variable : a block of code that defines a variable , which is a way to pass information into a module or resource
+
+- locals : a block of code that defines a local value , which is a way to store information that is used multiple times in a module or resource
+
+- terraform : a block of code that defines the terraform block , which is a way to configure Terraform itself , such as the version of Terraform to use
+
+- null_resource : a block of code that defines a null resource , which is a way to run a local provisioner , which is a way to run a local script or command 
 
 
 -- vpc in AWS : 
@@ -144,5 +171,102 @@ resource "aws_vpc" "ohio_vpc" {
 
 # data sources in detail : 
 
-A data source in Terraform is used to fetch data from a resource that is not managed by the current Terraform project. This allows it to be used in the current project. You can think of it as a read-only resource that already exists; the object exists, but you want to read specific properties of that object for use in your project.
+A data source in Terraform is used to fetch data from a resource that is not managed by the current Terraform project.
+ This allows it to be used in the current project. You can think of it as a read-only resource that already exists;
+  the object exists, but you want to read specific properties of that object for use in your project.
+
+
+file & structure :
+"block_Name" "resource_type" "resource_name" {
+    key = "value"
+}
+
+state file :
+- terraform.tfstate :  is a file that keeps track of the resources that Terraform has created and their current state, such as the ID of the resource, the IP address, and so on. This file is created when you run terraform apply and is updated every time you run terraform apply or terraform destroy.
+- terraform.tfstate.backup : is a backup of the terraform.tfstate file. It is created every time you run terraform apply or terraform destroy. If you accidentally delete the terraform.tfstate file, you can use the terraform.tfstate.backup file to restore the state of your infrastructure.
+- terraform.tfstate.lock.info : is a lock file that is created when you run terraform apply. It is used to prevent multiple users from running terraform apply at the same time. If you see this file, it means that Terraform is currently applying changes to your infrastructure.
+
+desired state vs current state :
+- Desired state is the state of the infrastructure that you want to achieve. It is defined in the Terraform configuration files.
+- Current state is the state of the infrastructure that Terraform has created. It is stored in the terraform.tfstate file.
+
+terraform variables : 
+- Variables in Terraform are a way to pass information into a module or resource. They allow you to define values that can be used in multiple places in your Terraform configuration files. Variables can be defined at the root module level or within a module.
+- can be defifined in the same file or in a separate file or can be passed as an argument in the command line or as an environment variable     
+
+
+
+
+
+# output in terraform :
+- Outputs in Terraform are a way to expose information about the infrastructure to the user. They allow you to define values that can be displayed after Terraform has finished applying changes to the infrastructure. Outputs can be defined at the root module level or within a module.
+- can be used to display the ip address of the instance or the id of the instance or the name of the instance 
+- can be used to display the output of the module
+- example :  output "instance_ip" { value = aws_instance.example.public_ip } => this will display the ip address of the instance 
+
+# data block in terraform : 
+- A data block in Terraform is used to fetch data from a resource that is not managed by the current Terraform project. This allows it to be used in the current project. You can think of it as a read-only resource that already exists; the object exists, but you want to read specific properties of that object for use in your project.
+- example : data "aws_ami" "example" { most_recent = true owners = ["self"] } => this will fetch the most recent ami that is created by the owner 
+
+# terraform provisioners :
+- Provisioners in Terraform are used to execute scripts or commands on a local or remote machine as part of the resource creation process. They allow you to run scripts or commands to configure the resource after it has been created. Provisioners can be used to install software, run commands, or perform other tasks on the resource.
+- example : provisioner "local-exec" { command = "echo 'Hello, World!'" } => this will run the command echo 'Hello, World!' on the local machine
+
+
+# terraform debugging :
+- use export TF_LOG=DEBUG to enable the debug mode and to stop it use export TF_LOG=off 
+- trace mode : the most verbose level it provides details logs for debugging including information about each terraform opration
+- DEBUG : a high level of verbosity that provides terraform action and operation 
+- INFO : a medium level of verbosity
+- WARN : log warning message used to indicate potential issues or concerns in the terraform configuration
+- ERROR : a low level of verbosity that provides error messages
+
+# resource dependencies in terraform :
+- implicit dependencies : Terraform automatically creates dependencies between resources based on the order in which they are defined in the configuration file. If resource A depends on resource B, Terraform will automatically create a dependency between the two resources.
+- explicit dependencies : You can also define explicit dependencies between resources using the depends_on argument. This allows you to specify that one resource depends on another resource, even if they are not defined in the same module.
+- example : resource "aws_instance" "example" { depends_on = [aws_security_group.example] } => this will create a dependency between the instance and the security group
+
+# terraform state commands :
+- terraform state list : to list all the resources in the state file
+- terraform state show : to show the details of a specific resource in the state file
+- terraform state mv : to move a resource to a new name in the state file
+- terraform state rm : to remove a resource from the state file
+- terraform state pull : to pull the current state from the remote state file
+- terraform state push : to push the current state to the remote state file
+- terraform state replace-provider : to replace the provider for a resource in the state file
+
+# remote state & backup configuration :
+- backend : the place where the state file is stored, can be local or in the cloud
+
+- remote state : the state file stored in a remote backend, such as Amazon S3 or HashiCorp Consul
+
+- backup configuration : a backup of the state file that is created every time you run terraform apply or terraform destroy. It is used to restore the state of your infrastructure if the state file is accidentally deleted.
+
+- state locking : a mechanism used to prevent multiple users from running terraform apply at the same time. It is used to ensure that only one user can make changes to the infrastructure at a time.
+
+- example : terraform { backend "s3" { bucket = "my-terraform-state" key = "terraform.tfstate" region = "us-east-1" } } => this will configure the backend to store the state file in an S3 bucket
+
+# terraform import command : 
+- The terraform import command is used to import existing infrastructure into Terraform. It allows you to bring existing resources under Terraform management so that you can manage them using Terraform configuration files.
+- example : terraform import aws_instance.example i-1234567890abcdef0 => this will import the existing instance with the ID i-1234567890abcdef0 into Terraform
+
+# terraform modules :
+- A module in Terraform is a way to group together resources and data sources. It allows you to create reusable components that can be shared across different projects. Modules can be used to define infrastructure components, such as a VPC, subnet, or security group, and then be reused in different projects.
+- root module : the main module that contains the main configuration files
+- child module : a module that is included in the root module using the module block 
+- example : module "vpc" { source = "./modules/vpc" } => this will include the vpc module from the modules/vpc directory
+
+# terraform workspaces :
+- Workspaces in Terraform are a way to manage multiple environments, such as development, staging, and production, within a single Terraform configuration. They allow you to create separate instances of the same infrastructure in different environments, each with its own state file.
+
+
+# terraform best practices :
+- Use version control : Use version control to track changes to your Terraform configuration files and collaborate with other team members.
+- Use modules : Use modules to create reusable components that can be shared across different projects.
+- Use variables : Use variables to pass information into modules and resources and make your configuration files more flexible.
+- Use outputs : Use outputs to expose information about the infrastructure to the user and make it easier to access important information.
+- Use remote state : Use remote state to store the state file in a remote backend and make it easier to manage and share the state file.
+- Use workspaces : Use workspaces to manage multiple environments within a single Terraform configuration and make it easier to create separate instances of the same infrastructure in different environments.
+- Use state locking : Use state locking to prevent multiple users from running terraform apply at the same time and ensure that only one user can make changes to the infrastructure at a time.
+ 
 
