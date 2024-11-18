@@ -193,6 +193,18 @@ desired state vs current state :
 terraform variables : 
 - Variables in Terraform are a way to pass information into a module or resource. They allow you to define values that can be used in multiple places in your Terraform configuration files. Variables can be defined at the root module level or within a module.
 - can be defifined in the same file or in a separate file or can be passed as an argument in the command line or as an environment variable     
+   
+    -Variable Defaults : means that if you do not provide a value for that variable, then the default will be used
+    - -var flag  : to pass the variable as an argument in the command line
+    - export TF_VAR_name=value : to pass the variable as an environment variable 
+    - terraform.tfvars : to store the variables in a separate file
+    - type constraints : to define the type of the variable
+                        - simple types : string , number , bool
+                        - complex types : - list :  type = list(string) , => element (var.name, number ) to get specific element , length(var.name) to get the length of the list
+                                          - map :  
+                                          - object : 
+                                          - tuple : 
+                                          - set : 
 
 
 
@@ -251,13 +263,9 @@ terraform variables :
 - example : terraform import aws_instance.example i-1234567890abcdef0 => this will import the existing instance with the ID i-1234567890abcdef0 into Terraform
 
 # terraform modules :
-- A module in Terraform is a way to group together resources and data sources. It allows you to create reusable components that can be shared across different projects. Modules can be used to define infrastructure components, such as a VPC, subnet, or security group, and then be reused in different projects.
-- root module : the main module that contains the main configuration files
-- child module : a module that is included in the root module using the module block 
-- example : module "vpc" { source = "./modules/vpc" } => this will include the vpc module from the modules/vpc directory
-
-# terraform workspaces :
-- Workspaces in Terraform are a way to manage multiple environments, such as development, staging, and production, within a single Terraform configuration. They allow you to create separate instances of the same infrastructure in different environments, each with its own state file.
+- A module in Terraform is a mini Terraform project that can contain all of the same constructs as our main Terraform project (resources, data blocks, locals, etc.)
+- allow us to define a reusable block of Terraform code of which we can have many instances in our main Terraform project.
+- remote modules : modules that are stored in a remote repository, such as the Terraform Registry or a Git repository 
 
 
 # terraform best practices :
@@ -270,3 +278,23 @@ terraform variables :
 - Use state locking : Use state locking to prevent multiple users from running terraform apply at the same time and ensure that only one user can make changes to the infrastructure at a time.
  
 
+# breif about VPC in AWS : 
+- A VPC in AWS is a virtual private cloud that allows you to launch AWS resources into a virtual network that you define. This network is isolated from other VPCs and the public internet.
+- A subnet is a range of IP addresses within a VPC.
+- An internet gateway is a virtual router that connects your VPC to the public internet.
+- A security group is a virtual firewall that controls inbound and outbound traffic to your instances.
+
+#Terraform import command : 
+- The terraform import command is used to import existing infrastructure into Terraform. It allows you to bring existing resources under Terraform management so that you can manage them using Terraform configuration files.
+-  read the resource and put it into its state. Remember, the state is Terraform’s store of what it created or which resources it manages. By doing an import, you are instructing Terraform to start managing that resource.   
+
+# terraform state rm  :
+- The terraform state rm command is used to remove a resource from the state file. It allows you to remove a resource that is no longer needed or that was imported by mistake. When you run terraform state rm, Terraform will remove the resource from the state file and update the state file accordingly.
+
+# Workspaces in Terraform :
+-Workspaces are an important feature of Terraform that can be used to create several copies of your infrastructure
+- Workspaces allow you to manage multiple environments within a single Terraform configuration. This can be useful if you want to create separate instances of the same infrastructure in different environments, such as development, staging, and production.
+
+# Terraform provisioners :
+- A provisioner in Terraform can run a script either remotely or locally after a resource has been created. Provisioners can be used to install software, run commands, or perform other tasks on the resource. There are several types of provisioners in Terraform, including local-exec, remote-exec, and file.
+- .... 

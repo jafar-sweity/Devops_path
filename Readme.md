@@ -33,6 +33,7 @@ The learning never stops! Soon, I'll be adding:
 - Monitoring and Logging: Tools and best practices for observability
 - Cloud Providers: AWS, Azure, GCP deep dives
 - jenkins
+
 ## Why This Repository?
 
 This repository acts as a resource for:
@@ -49,7 +50,7 @@ Have ideas or suggestions? Contributions are welcome! Please feel free to open i
 
 If you’d like to discuss or collaborate, feel free to reach out via:
 
-- **Email:** jata1518@gmail.com
+- **Email:** <jata1518@gmail.com>
 - **LinkedIn:** https://www.linkedin.com/in/jafar-sweiti-
 
 ---
